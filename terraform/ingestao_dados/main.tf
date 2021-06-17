@@ -1,13 +1,35 @@
+# cloudwatch event. Its gonna trigger lambda
+resource "aws_cloudwatch_event_rule" "rule_lambda_rule_punkapi" {
+  name                = "rule_lambda_punkapi"
+  description         = "Rule thats gonna trigger the punkapi lambda"
+  is_enabled          = true
+  schedule_expression = "rate(5 minute)"
+}
+
+resource "aws_cloudwatch_event_target" "target_lambda_punkapi" {
+  rule = aws_cloudwatch_event_rule.rule_lambda_rule_punkapi.name
+  arn  = aws_lambda_function.lambda_punkapi.arn
+}
+
 # lambda
+data "archive_file" "lambda_punkapi" {
+  type        = "zip"
+  source_file = "../../lambdas/lambda_punkapi/app/app.py"
+  output_path = "../../lambdas/lambda_punkapi/app.zip"
+}
+
 resource "aws_lambda_function" "lambda_punkapi" {
-  image_uri     = "ecr path"
+  filename      = data.archive_file.lambda_punkapi.output_path
   function_name = var.lambda_function_name
   description   = "Get data from punkapi, endpoint random"
-  role          = aws_iam_role.iam_for_lambda.arn
+  role          = aws_iam_role.iam_for_lambda_punkapi.arn
+  handler       = "app.lambda_handler"
 
+  runtime = "python3.8"
   environment {
     variables = {
       URL_PUNKAPI = "https://api.punkapi.com/v2/beers/random"
+      STREAM_NAME = var.kinesis_name
     }
   }
 }
@@ -40,20 +62,6 @@ resource "aws_lambda_permission" "allow_cloudwatch" {
   source_arn    = aws_cloudwatch_event_rule.rule_lambda_rule_punkapi.arn
 }
 
-# cloudwatch event. Its gonna trigger lambda
-resource "aws_cloudwatch_event_rule" "rule_lambda_rule_punkapi" {
-  name        = "rule_lambda_punkapi"
-  description = "Rule thats gonna trigger the punkapi lambda"
-  is_enabled = true
-  schedule_expression ="rate(5 minute)"
-  tags = var.ingestion_tags
-}
-
-resource "aws_cloudwatch_event_target" "target_lambda_punkapi" {
-  rule      = aws_cloudwatch_event_rule.rule_lambda_rule_punkapi.name
-  arn       = aws_lambda_function.lambda_punkapi.arn
-}
-
 # logs
 resource "aws_cloudwatch_log_group" "example" {
   name              = "/aws/lambda/${var.lambda_function_name}"
@@ -66,21 +74,21 @@ resource "aws_iam_policy" "lambda_logging" {
   description = "IAM policy for logging from a lambda"
 
   policy = <<EOF
+{
+"Version": "2012-10-17",
+"Statement": [
     {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-        "Action": [
-            "logs:CreateLogGroup",
-            "logs:CreateLogStream",
-            "logs:PutLogEvents"
-        ],
-        "Resource": "arn:aws:logs:*:*:*",
-        "Effect": "Allow"
-        }
-    ]
+    "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+    ],
+    "Resource": "arn:aws:logs:*:*:*",
+    "Effect": "Allow"
     }
-    EOF
+]
+}
+EOF
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logs" {

@@ -8,8 +8,10 @@ import requests as r
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
-PUNKAPI_URL = os.getenv['PUNKAPI_URL']
-kinesis_client = boto3.client('kinesis')
+PUNKAPI_URL = os.getenv["PUNKAPI_URL"]
+STREAM_NAME = os.getenv["STREAM_NAME"]
+
+kinesis_client = boto3.client("kinesis")
 
 
 def get_data_from_punkapi() -> dict:
@@ -20,8 +22,8 @@ def get_data_from_punkapi() -> dict:
         will be different of 200 and a http erro will rise
 
     Returns:
-        dict: a dict with a random beer 
-    """    
+        dict: a dict with a random beer
+    """
     try:
         answer = r.get(PUNKAPI_URL)
         answer.raise_for_status()
@@ -31,16 +33,16 @@ def get_data_from_punkapi() -> dict:
     return answer.json()[0]
 
 
-def push_to_kinesis(beer:dict) -> None:
+def push_to_kinesis(beer: dict) -> None:
     try:
         log.info("Sending beer data to kinesis.")
         _ = kinesis_client.put_record(
-            StreamName = '',
+            StreamName="",
             Data=bytes(beer),
-            PartitionKey='',
-            )
+            PartitionKey="",
+        )
     except:
-        log.error('')
+        log.error("")
         ...
 
 
@@ -69,7 +71,4 @@ def lambda_handler(event, context):
     beer = get_data_from_punkapi()
     push_to_kinesis(beer)
 
-    return {
-        "statusCode": 200,
-        "body": beer
-    }
+    return {"statusCode": 200, "body": beer}
