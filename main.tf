@@ -23,6 +23,7 @@ module "cleaned" {
 module "raw" {
   source      = "./terraform/lake/raw"
   kinesis_arn = module.kinesis.arn_kinesis_firehose_raw_data_beer
+
   depends_on = [
     module.kinesis
   ]

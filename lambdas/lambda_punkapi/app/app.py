@@ -8,8 +8,8 @@ import requests as r
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
-PUNKAPI_URL = os.getenv["PUNKAPI_URL"]
-STREAM_NAME = os.getenv["STREAM_NAME"]
+URL_PUNKAPI = os.environ["URL_PUNKAPI"]
+STREAM_NAME = os.environ["STREAM_NAME"]
 
 kinesis_client = boto3.client("kinesis")
 
@@ -25,7 +25,7 @@ def get_data_from_punkapi() -> dict:
         dict: a dict with a random beer
     """
     try:
-        answer = r.get(PUNKAPI_URL)
+        answer = r.get(URL_PUNKAPI)
         answer.raise_for_status()
     except r.exceptions.HTTPError as error:
         log.error(f"HTTPerror: {error}")
@@ -37,13 +37,13 @@ def push_to_kinesis(beer: dict) -> None:
     try:
         log.info("Sending beer data to kinesis.")
         _ = kinesis_client.put_record(
-            StreamName="",
-            Data=bytes(beer),
-            PartitionKey="",
+            StreamName=STREAM_NAME,
+            Data=json.dumps(beer),
+            PartitionKey="beer_key",
         )
-    except:
-        log.error("")
-        ...
+    except Exception as e:
+        log.error(f"Error: {e}")
+        raise e
 
 
 def lambda_handler(event, context):

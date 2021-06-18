@@ -13,3 +13,5 @@ https://towardsdatascience.com/aws-lambda-as-a-link-between-sqs-and-kinesis-a39c
 https://stackoverflow.com/questions/56107258/terraform-upload-file-to-s3-on-every-apply
 https://adefemi171.medium.com/create-a-terraform-module-that-creates-1-kinesis-firehose-and-sqs-57d5a212d691
 https://github.com/adefemi171/AWS-Kinesis-firehose-sqs
+https://gist.github.com/bernadinm/6f68bfdd015b3f3e0a17b2f00c9ea3f8
+https://github.com/felipefrizzo/terraform-aws-kinesis-firehose
