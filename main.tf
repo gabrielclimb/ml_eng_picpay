@@ -33,3 +33,16 @@ module "kinesis" {
   source = "./terraform/lake/kinesis"
 
 }
+
+module "consulta" {
+  source                 = "./terraform/consulta"
+  s3_bucket_cleaned_data = module.cleaned.name_cleaned_data_beer_bucket
+
+  depends_on = [
+    module.ingestao,
+    module.cleaned,
+    module.raw,
+    module.kinesis
+  ]
+
+}

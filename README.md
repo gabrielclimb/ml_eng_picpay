@@ -15,3 +15,4 @@ https://adefemi171.medium.com/create-a-terraform-module-that-creates-1-kinesis-f
 https://github.com/adefemi171/AWS-Kinesis-firehose-sqs
 https://gist.github.com/bernadinm/6f68bfdd015b3f3e0a17b2f00c9ea3f8
 https://github.com/felipefrizzo/terraform-aws-kinesis-firehose
+https://stackoverflow.com/questions/55129035/terraform-aws-athena-to-use-glue-catalog-as-db

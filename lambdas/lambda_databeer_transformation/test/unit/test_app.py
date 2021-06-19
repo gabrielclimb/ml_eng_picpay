@@ -124,11 +124,3 @@ def test_transform_data(kinesis_firehose_event):
     expected_tuple = [287, "Hello My Name Is Marianne", 8.2, 70, 1009, 1070, 15, 8, 4.4]
     assert app.transform_data(data) == expected_tuple
 
-    """Extract data from dict and decode
-
-    Args:
-        event (dict): event from kinesis with data on base64
-
-    Returns:
-        dict: json from punkapi on utf-8
-    """

@@ -25,7 +25,7 @@ resource "aws_kinesis_firehose_delivery_stream" "cleaned_data_beer" {
         type = "Lambda"
         parameters {
           parameter_name  = "LambdaArn"
-          parameter_value = "${aws_lambda_function.lambda_kinesis_firehose_data_beer_transformation.arn}:$LATEST"
+          parameter_value = "${aws_lambda_function.lambda_databeer_transformation.arn}:$LATEST"
         }
       }
     }
@@ -83,7 +83,6 @@ resource "aws_iam_role" "firehose_role_cleaned" {
       ]
     })
   }
-
 }
 
 # lambda
@@ -93,9 +92,9 @@ data "archive_file" "lambda_databeer_transformation" {
   output_path = "${path.root}/lambdas/${var.lambda_function_name}/app/app.zip"
 }
 
-resource "aws_lambda_function" "lambda_kinesis_firehose_data_beer_transformation" {
+resource "aws_lambda_function" "lambda_databeer_transformation" {
   filename      = data.archive_file.lambda_databeer_transformation.output_path
-  function_name = "lambda_kinesis_firehose_data_beer_transformation"
+  function_name = "lambda_databeer_transformation"
   description   = "Transform json data into a table and save a csv"
   role          = aws_iam_role.iam_for_lambda_transformation.arn
   handler       = "app.lambda_handler"

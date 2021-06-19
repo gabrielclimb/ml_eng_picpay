@@ -8,11 +8,6 @@ import requests as r
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
-URL_PUNKAPI = os.environ["URL_PUNKAPI"]
-STREAM_NAME = os.environ["STREAM_NAME"]
-
-kinesis_client = boto3.client("kinesis")
-
 
 def get_data_from_punkapi() -> dict:
     """get data from punkapi random endpoint
@@ -25,7 +20,7 @@ def get_data_from_punkapi() -> dict:
         dict: a dict with a random beer
     """
     try:
-        answer = r.get(URL_PUNKAPI)
+        answer = r.get(os.environ["URL_PUNKAPI"])
         answer.raise_for_status()
     except r.exceptions.HTTPError as error:
         log.error(f"HTTPerror: {error}")
@@ -35,9 +30,10 @@ def get_data_from_punkapi() -> dict:
 
 def push_to_kinesis(beer: dict) -> None:
     try:
+        kinesis_client = boto3.client("kinesis")
         log.info("Sending beer data to kinesis.")
         _ = kinesis_client.put_record(
-            StreamName=STREAM_NAME,
+            StreamName=os.environ["STREAM_NAME"],
             Data=json.dumps(beer),
             PartitionKey="beer_key",
         )

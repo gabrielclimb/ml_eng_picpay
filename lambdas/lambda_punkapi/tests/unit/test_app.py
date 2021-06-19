@@ -1,6 +1,7 @@
 import json
+import os
+from lambda_punkapi.app import app
 
-from hello_world import app
 
 BEER_KEYS = [
     "id",
@@ -27,14 +28,12 @@ BEER_KEYS = [
 ]
 
 
-def test_get_data_from_punkapi(mock_response_punkapi):
+def test_get_data_from_punkapi():
     answer = app.get_data_from_punkapi()
     assert [i for i in answer.keys()] == BEER_KEYS
 
 
-def test_lambda_handler(cloudwatch_event, mocker):
-    answer = app.lambda_handler(cloudwatch_event, "")
-    beer = json.loads(answer["body"])
-
-    assert beer["statusCode"] == 200
+def test_lambda_handler(create_infra):
+    answer = app.lambda_handler("event", "context")
+    beer = answer["body"]
     assert beer["name"] == "Hopped-Up Brown Ale - Prototype Challenge"

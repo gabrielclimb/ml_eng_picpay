@@ -54,18 +54,26 @@ def transform_data(data: dict) -> list:
     ]
 
 
-def transform_to_csv(row: tuple):
+def transform_to_csv(row: list) -> str:
+    """get a matrix and returns a string in csv format
+
+    Args:
+        row (list): a matrix ([[]])
+
+    Returns:
+        str: csv file as string
+    """
     output = StringIO()
     writer = csv.writer(output, delimiter=",")
     writer.writerows(row)
-    your_csv_string = output.getvalue()
+    return output.getvalue()
 
 
 def lambda_handler(event, context):
     try:
         record_id, data = get_record_id_and_data(event)
         row = transform_data(data)
-        output = transform_to_csv(row)
+        output = transform_to_csv([row])
     except Exception as e:
         log.error(f"Error: {e}")
         raise e

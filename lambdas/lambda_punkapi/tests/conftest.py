@@ -1,7 +1,10 @@
+import os
 import json
 
 import pytest
 import requests
+import boto3
+import moto
 
 
 @pytest.fixture()
@@ -26,13 +29,40 @@ class Response:
 
 
 class MockResponsePunkApi(Response):
-    with open("lambda_punkapi/tests/files/punkapi_answer.json", "r") as f:
+    with open("tests/files/punkapi_answer.json", "r") as f:
         text = json.loads(str(f.read()))
 
+    def json(self):
+        return self.text
 
-@pytest.fixture
+
+@pytest.fixture(autouse=True)
 def mock_response_punkapi(monkeypatch):
     def mock_get(*args, **kwargs):
         return MockResponsePunkApi()
 
     monkeypatch.setattr(requests, "get", mock_get)
+
+
+@pytest.fixture(autouse=True)
+def lambda_enviroment_variables():
+    os.environ["URL_PUNKAPI"] = "testing"
+    os.environ["STREAM_NAME"] = "testing"
+
+
+@pytest.fixture(scope="function")
+def aws_enviroment_variables():
+    os.environ["AWS_ACCESS_KEY_ID"] = "testing"
+    os.environ["AWS_SECRET_ACCESS_KEY"] = "testing"
+    os.environ["AWS_SECURITY_TOKEN"] = "testing"
+    os.environ["AWS_SESSION_TOKEN"] = "testing"
+    os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+
+
+@pytest.fixture
+def create_infra(aws_enviroment_variables):
+    with moto.mock_kinesis():
+        conn = boto3.client("kinesis")
+        stream_name = "testing"
+        conn.create_stream(StreamName=stream_name, ShardCount=1)
+        yield
