@@ -29,7 +29,7 @@ class Response:
 
 
 class MockResponsePunkApi(Response):
-    with open("tests/files/punkapi_answer.json", "r") as f:
+    with open("lambdas/lambda_punkapi/tests/files/punkapi_answer.json", "r") as f:
         text = json.loads(str(f.read()))
 
     def json(self):
