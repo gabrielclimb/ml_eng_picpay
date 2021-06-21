@@ -1,5 +1,5 @@
 # Móduloas Terraform
-![terraform](https://www.google.com/url?sa=i&url=https%3A%2F%2Fcongdonglinux.com%2Fterraform-zero-to-hero%2F&psig=AOvVaw15PI-F194nHJmzG60OP2uR&ust=1624330644702000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCMDV5rPdp_ECFQAAAAAdAAAAABAD)  
+![terraform](../figuras/Terraform.png)  
 
 
 Códigos para criação de toda a infra do projeto
