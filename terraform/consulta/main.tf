@@ -108,6 +108,13 @@ resource "aws_glue_catalog_table" "table_data_beer" {
   }
 }
 
+# s3 output query
+resource "aws_s3_bucket" "output_query_bucket" {
+  bucket        = "picpay-athena-query-result"
+  acl           = "private"
+  force_destroy = true
+}
+
 # roles
 resource "aws_iam_role" "aws_glue_crawler" {
   name = "aws_glue_crawler"

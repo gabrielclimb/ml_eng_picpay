@@ -7,16 +7,18 @@ help:
 	@echo "aws_variables: Checa se as variáveis de ambiente da AWS foram definidas."
 	@echo "terraform    : Roda o commando terraform apply."
 	@echo "deploy_infra : Roda o teste das lambdas, o aws_variable e o terraform apply"
+	@echo "retrain      : Roda o retreino do modelo coletando os dado via athena e s3"
+	@echo "serve        : Serve o modelo localmente"
 	@echo "deploy_model : Faz o deploy do modelo em uma lambda na aws"
 
 
 # Environment
 .ONESHELL:
 venv:
-	python3 -m venv venv
+	python -m venv venv && \
 	source venv/bin/activate && \
-	pip install --upgrade pip setuptools wheel && \
-	pip install -r requirements.txt --no-cache-dir && \
+	pip install --upgrade pip && \
+	pip install -r requirements.txt
 
 clean:
 	find . -type f -name '*.pyc' -delete
@@ -43,9 +45,16 @@ terraform:
 .PHONY: deploy_infra
 deploy_infra: test aws_variables_check terraform
 
+.PHONY: retrain
+retrain:
+	@echo "Começando o retreino do modelo"
+	@source venv/bin/activate && \
+	python model/serving/retrain.py --version $(version)
+
 .PHONY: serve
 serve:
-	@bentoml serve BeerPredictionService:v1
+	@source venv/bin/activate && \
+	bentoml serve BeerPredictionService:v1
 
 .PHONY: deploy_model
 deploy_model:

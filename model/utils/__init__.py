@@ -1,5 +1,6 @@
 from time import sleep
 
+import boto3
 import pandas as pd
 import requests as r
 
@@ -49,3 +50,4 @@ def get_data_from_api() -> pd.DataFrame:
             "ph",
         ],
     )
+

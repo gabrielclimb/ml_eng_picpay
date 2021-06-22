@@ -53,9 +53,9 @@ Com a tabela criada, leio os dados da tabela e treino o modelo para inferir o IB
     - *serving*:
     - *utils* : Módulo com funções em python uteis ao modelo.
 - **terraform**: Todo o código terraform do projeto está nessa pasta, separado segundo o diagrama apresentado:
-    - *consulta*: Códgio que cria toda a estrutura de tabelas no glue
-    - *ingestao_dados*: Código que cria a parte do CloudWatch Event e da lambda de ingestão
-    - *lake*: Código para o Kinesis, Kinesis Firehose, Lambda e S3  
+    - *consulta*: Códgio que cria toda a estrutura de tabelas no glue e no athena.
+    - *ingestao_dados*: Código que cria a parte do CloudWatch Event e da lambda de ingestão.
+    - *lake*: Código para o Kinesis, Kinesis Firehose, Lambda e S3.
 
 
 ***
@@ -80,6 +80,12 @@ Você pode ver o que cada função do `Makefile` faz rodando `make help`, mas o 
 1. `make venv` 
 2. `make deploy_infra`
 3. `make deploy_model`
+
+Para retreino do modelo, execute:
+
+```bash
+make retrain version=v#
+```
 ***
 ### Acessos na AWS
 Para poder executar o projeto de forma correta, é preciso ter acesso aos seguintes serviços:

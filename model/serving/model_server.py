@@ -4,7 +4,7 @@ import pandas as pd
 from bentoml.adapters import DataframeInput
 from bentoml.frameworks.sklearn import SklearnModelArtifact
 
-from serving.feature_engineering import ale_or_pilsen, ebc_to_group, group_ph
+from feature_engineering import ale_or_pilsen, ebc_to_group, group_ph
 
 
 @bentoml.artifacts([SklearnModelArtifact("model")])
