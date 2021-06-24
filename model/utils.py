@@ -72,3 +72,4 @@ def get_data_from_api() -> pd.DataFrame:
             "ph",
         ],
     )
+

@@ -15,7 +15,8 @@ help:
 # Environment
 .ONESHELL:
 venv:
-	python -m venv venv && \
+	@echo "Criando ambiente virtual"
+	@python3 -m venv venv && \
 	source venv/bin/activate && \
 	pip install --upgrade pip && \
 	pip install -r requirements.txt
@@ -45,13 +46,14 @@ deploy_infra: test check_aws terraform
 .PHONY: retrain
 retrain:
 	@echo "Começando o retreino do modelo"
+
 	@source venv/bin/activate && \
 	python3 model/retrain.py --version $(version)
 
 .PHONY: serve
 serve:
 	@source venv/bin/activate && \
-	bentoml serve BeerPredictionService:v1
+	bentoml serve BeerPredictionService:$(version)
 
 .PHONY: serve_docker
 serve_docker:
@@ -59,4 +61,5 @@ serve_docker:
 
 .PHONY: deploy_model
 deploy_model:
-	bentoml lambda deploy my-first-lambda-deployment -b BeerPredictionService:v1
+	@source venv/bin/activate && \
+	bentoml ec2 deploy ibu-model-deployment -b BeerPredictionService:$(version)

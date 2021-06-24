@@ -1,4 +1,4 @@
-FROM bentoml/model-server:0.13.0
+FROM bentoml/model-server:0.13.0-py38
 
 # Configure PIP install arguments, e.g. --index-url, --trusted-url, --extra-index-url
 ARG EXTRA_PIP_INSTALL_ARGS=

@@ -8,7 +8,7 @@ from scipy.stats import randint, uniform
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 
-from notebook.utils import get_data_from_table
+from utils import get_data_from_table
 from server.feature_engineering import ale_or_pilsen, ebc_to_group, group_ph
 
 

@@ -1,24 +1,30 @@
 version: 0.13.0
 kind: BentoService
 metadata:
-  created_at: 2021-06-20 23:52:49.252212
+  created_at: 2021-06-24 14:23:20.032807
   service_name: BeerPredictionService
   service_version: v1
-  module_name: serving.model_server
-  module_file: serving/model_server.py
+  module_name: server.model_server
+  module_file: server/model_server.py
 env:
   pip_packages:
   - bentoml==0.13.0
   - lightgbm==3.2.1
-  - pandas==1.2.4
+  - pandas==1.1.0
+  - numpy==1.20.0
+  - wheel==0.36.2
+  - protobuf==3.15.8
+  - scipy==1.6.1
   conda_env:
     name: bentoml-default-conda-env
     dependencies: []
   python_version: 3.8.10
-  docker_base_image: bentoml/model-server:0.13.0
+  docker_base_image: bentoml/model-server:0.13.0-py38
 apis:
 - name: predict
-  docs: "\n        Predict IBU value\n        "
+  docs: "\n        Predict IBU value\n        POST ex: [{\"name\": \"ale\", \"abv\"\
+    : 9.0, \"target_fg\": 1025.0,\n                  \"target_og\": 1094.0, \"ebc\"\
+    : 400.0, \"srm\": 200.0, \"ph\": 4.3}]\n        "
   input_type: DataframeInput
   output_type: DefaultOutput
   mb_max_batch_size: 4000
