@@ -14,7 +14,7 @@ env:
   conda_env:
     name: bentoml-default-conda-env
     dependencies: []
-  python_version: 3.9.5
+  python_version: 3.8.10
   docker_base_image: bentoml/model-server:0.13.0
 apis:
 - name: predict

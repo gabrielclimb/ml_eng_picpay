@@ -8,28 +8,28 @@ metadata:
   module_file: serving/model_server.py
 env:
   pip_packages:
-  - bentoml==0.13.0
-  - lightgbm==3.2.1
-  - pandas==1.2.4
+    - bentoml==0.13.0
+    - lightgbm==3.2.1
+    - pandas==1.2.4
   conda_env:
     name: bentoml-default-conda-env
     dependencies: []
-  python_version: 3.9.5
+  python_version: 3.8.10
   docker_base_image: bentoml/model-server:0.13.0
 apis:
-- name: predict
-  docs: "\n        Predict IBU value\n        "
-  input_type: DataframeInput
-  output_type: DefaultOutput
-  mb_max_batch_size: 4000
-  mb_max_latency: 20000
-  batch: true
-  route: predict
-  input_config:
-    orient:
-    typ: frame
-    dtype:
+  - name: predict
+    docs: "\n        Predict IBU value\n        "
+    input_type: DataframeInput
+    output_type: DefaultOutput
+    mb_max_batch_size: 4000
+    mb_max_latency: 20000
+    batch: true
+    route: predict
+    input_config:
+      orient:
+      typ: frame
+      dtype:
 artifacts:
-- name: model
-  artifact_type: SklearnModelArtifact
-  metadata: {}
+  - name: model
+    artifact_type: SklearnModelArtifact
+    metadata: {}

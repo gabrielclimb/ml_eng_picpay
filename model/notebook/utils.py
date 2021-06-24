@@ -27,6 +27,28 @@ def transform_data(data: dict) -> list:
     ]
 
 
+def get_data_from_table() -> pd.DataFrame:
+    """Get beer data from a table using glue
+
+    Returns:
+        pd.DataFrame: dataframe with data
+    """
+    client = boto3.client("athena")
+
+    queryStart = client.start_query_execution(
+        QueryString='SELECT * FROM "db_beer"."table_data_beer";',
+        QueryExecutionContext={"Database": "db_beer"},
+        ResultConfiguration={"OutputLocation": "s3://picpay-athena-query-result/"},
+    )
+
+    query_execution = client.get_query_execution(
+        QueryExecutionId=queryStart["QueryExecutionId"]
+    )
+    s3_path = query_execution["QueryExecution"]["ResultConfiguration"]["OutputLocation"]
+
+    return pd.read_csv(s3_path)
+
+
 def get_data_from_api() -> pd.DataFrame:
     beers = []
     for i in range(1, 100):
@@ -50,4 +72,3 @@ def get_data_from_api() -> pd.DataFrame:
             "ph",
         ],
     )
-

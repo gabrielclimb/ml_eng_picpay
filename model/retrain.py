@@ -8,11 +8,11 @@ from scipy.stats import randint, uniform
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 
-from feature_engineering import ale_or_pilsen, ebc_to_group, group_ph
-from model_server import BeerPredictionService
+from notebook.utils import get_data_from_table
+from server.feature_engineering import ale_or_pilsen, ebc_to_group, group_ph
 
 
-def feature_engineergin(dataframe: pd.DataFrame) -> pd.DataFrame:
+def feature_engineering(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe["type"] = dataframe.name.apply(ale_or_pilsen).astype("category")
     dataframe["color_group"] = dataframe.ebc.apply(ebc_to_group).astype("category")
     dataframe["ph_group"] = dataframe.ph.apply(group_ph).astype("category")
@@ -87,28 +87,6 @@ def bentoml_model_pack(model, version: str) -> None:
     bento_service.save(version=version)
 
 
-def get_data_from_table() -> pd.DataFrame:
-    """Get beer data from a table using glue
-
-    Returns:
-        pd.DataFrame: dataframe with data
-    """
-    client = boto3.client("athena")
-
-    queryStart = client.start_query_execution(
-        QueryString='SELECT * FROM "db_beer"."table_data_beer";',
-        QueryExecutionContext={"Database": "db_beer"},
-        ResultConfiguration={"OutputLocation": "s3://picpay-athena-query-result/"},
-    )
-
-    query_execution = client.get_query_execution(
-        QueryExecutionId=queryStart["QueryExecutionId"]
-    )
-    s3_path = query_execution["QueryExecution"]["ResultConfiguration"]["OutputLocation"]
-
-    return pd.read_csv(s3_path)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -122,7 +100,7 @@ if __name__ == "__main__":
     df_beer = get_data_from_table()
     df_beer = df_beer.drop(columns=["id"]).dropna()
 
-    df_beer = feature_engineergin(df_beer)
+    df_beer = feature_engineering(df_beer)
     df_beer = df_beer.drop(columns=["name"])
 
     X = df_beer.drop(columns=["ibu"])

@@ -141,7 +141,7 @@ resource "aws_iam_role" "iam_for_lambda_transformation" {
 }
 
 # Logs lambda
-resource "aws_cloudwatch_log_group" "example" {
+resource "aws_cloudwatch_log_group" "logs_lambda_cleaned" {
   name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = 14
 }

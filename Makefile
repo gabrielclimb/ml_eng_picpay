@@ -11,7 +11,6 @@ help:
 	@echo "serve        : Serve o modelo localmente"
 	@echo "deploy_model : Faz o deploy do modelo em uma lambda na aws"
 
-
 # Environment
 .ONESHELL:
 venv:
@@ -19,9 +18,6 @@ venv:
 	source venv/bin/activate && \
 	pip install --upgrade pip && \
 	pip install -r requirements.txt
-
-clean:
-	find . -type f -name '*.pyc' -delete
 
 # Test
 .PHONY: test
@@ -31,8 +27,8 @@ test:
 		pytest lambdas/ ; \
 	)
 
-.PHONY: aws_variables
-aws_variables_check: 
+.PHONY: check_aws
+check_aws: 
 	@bash -c 'if [ -z ${AWS_ACCESS_KEY_ID} ]; then erro echo "AWS_ACCESS_KEY_ID não foi definida"   ; else echo "AWS_ACCESS_KEY_ID = '$(AWS_ACCESS_KEY_ID)'"; fi'
 	@bash -c 'if [ -z ${AWS_SECRET_ACCESS_KEY} ]; then echo "AWS_SECRET_ACCESS_KEY não foi definida"; else echo "AWS_SECRET_ACCESS_KEY = '$(AWS_SECRET_ACCESS_KEY)'"; fi'
 	@bash -c 'if [ -z ${AWS_DEFAULT_REGION} ]; then echo "AWS_DEFAULT_REGION não foi definida" ; else echo "AWS_DEFAULT_REGION = '$(AWS_DEFAULT_REGION)'"; fi'
@@ -43,13 +39,13 @@ terraform:
 	@terraform apply
 
 .PHONY: deploy_infra
-deploy_infra: test aws_variables_check terraform
+deploy_infra: test check_aws terraform
 
 .PHONY: retrain
 retrain:
 	@echo "Começando o retreino do modelo"
 	@source venv/bin/activate && \
-	python model/serving/retrain.py --version $(version)
+	python3 model/retrain.py --version $(version)
 
 .PHONY: serve
 serve:
@@ -58,5 +54,4 @@ serve:
 
 .PHONY: deploy_model
 deploy_model:
-	@sudo sh variables.sh
 	bentoml lambda deploy my-first-lambda-deployment -b BeerPredictionService:v1
