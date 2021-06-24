@@ -8,12 +8,12 @@ O Projeto foi separado em 4 partes
 1. Ingestão de dados
 2. Data Lake
 3. Disponibilização dos dados (Consulta)
-4. Produtiza (Treino e Modelo em produçao)
+4. Produtização (Retreino e Modelo em produçao)
 
 Para a construção das partes 1, 2 e 3 utilizei o `terraform` e para o deploy do modelo em lambda utilizei o framework [bentoml](https://docs.bentoml.org/en/latest/)
 
 
-O projeto consiste em coletar os dados da PunkAPI, que é uma api com informações de cerveja da cervejaria BrewDog. Após a coleta dos dados, ele é enviado, via lambda, ao Kinesis que distribui esses dados em dois seguimentos:, 
+O projeto consiste em coletar os dados da [PunkAPI](https://api.punkapi.com/v2/beers/random) via Lambda, que é uma api com informações de cerveja da cervejaria BrewDog. Após a coleta dos dados, a mesma lambda envia os dados coletados ao Kinesis, que distribui esses dados em dois seguimentos:, 
  - Raw: Utilizando o Kinesis Firehose, o dado é armazenado no S3, no bucket `raw`, no mesmo estado que foi coletado (dado cru).
  - Cleaned: Utilizando o Kinesis Firehose e uma lambda, o dado capturado é manipulado, deixando somente as informações de id,
 name, abv, ibu, target_fg, target_og, ebc, srm e ph das cervejas e salvo no S3, no bucket `cleaned`. Para esse bucket é também criado uma tabela para que os dados sejam acessados, isso é feito utilizando o Glue Crawler e o Glue Data Catalog.
@@ -59,7 +59,12 @@ Com a tabela criada, leio os dados da tabela e treino o modelo para inferir o IB
 
 
 ***
-
+## Depências do projeto.
+ - [Conta AWS](https://aws.amazon.com/account/sign-up)
+ - [Docker](https://docs.docker.com/engine/install/)
+ - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+ - Python >= 3.8
+***
 ## Como utilizar esse repositório.
 
 Primeiro, você deve definir algumas variáveis de ambiente.
@@ -109,3 +114,4 @@ Um servidor local irá export um URL para acessar o Swagger/OpenAPI.
 ![Diagrama](figuras/Swagger.png)
 
 No endpoint predict há um exemplo de como fazer o request.
+

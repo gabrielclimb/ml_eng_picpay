@@ -8,7 +8,8 @@ help:
 	@echo "terraform    : Roda o commando terraform apply."
 	@echo "deploy_infra : Roda o teste das lambdas, o aws_variable e o terraform apply"
 	@echo "retrain      : Roda o retreino do modelo coletando os dado via athena e s3"
-	@echo "serve        : Serve o modelo localmente"
+	@echo "serve        : Serve o modelo localmente usando o bentoml"
+	@echo "serve_docker : Serve o modelo localmente usando o docker"
 	@echo "deploy_model : Faz o deploy do modelo em uma lambda na aws"
 
 # Environment
@@ -51,6 +52,10 @@ retrain:
 serve:
 	@source venv/bin/activate && \
 	bentoml serve BeerPredictionService:v1
+
+.PHONY: serve_docker
+serve_docker:
+	@docker run -p 5000:5000 gabrielclimb/picpay-ibu-predict:v1
 
 .PHONY: deploy_model
 deploy_model:
