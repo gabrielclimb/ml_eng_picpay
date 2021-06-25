@@ -90,7 +90,7 @@ Com o modelo criado, vem a produtização (etapa 4), para isso utilizei o framew
 Primeiro, você deve definir algumas variáveis de ambiente.
 
 ```bash
-export BENTOML_HOME="model/bentoml"
+export BENTOML_HOME=$PWD/"model/bentoml"
 export AWS_ACCESS_KEY_ID="<sua acess key aws>"
 export AWS_SECRET_ACCESS_KEY="<sua secret acess key aws>"
 export AWS_DEFAULT_REGION="<sua region aws>"
