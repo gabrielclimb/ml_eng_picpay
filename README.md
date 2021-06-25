@@ -33,23 +33,26 @@ Com o modelo criado, vem a produtização (etapa 4), para isso utilizei o framew
 ├── figuras
 ├── lambdas
 │   ├── lambda_databeer_transformation
-│   └── lambda_punkapi
+│   ├── lambda_punkapi
+│   └── README.md
+|
 ├── main.tf
 ├── model
 │   ├── bentoml
 │   ├── imagens
+│   ├── server
 │   ├── model.ipynb
+│   ├── retrain.py
+│   ├── utils.py
 │   └── server
 |
 ├── requirements.txt
-├── terraform
-│   ├── README.md
-│   ├── consulta
-│   ├── ingestao_dados
-│   └── lake
-├── terraform.tfstate
-├── terraform.tfstate.backup
-└── variables.sh
+└── terraform
+    ├── README.md
+    ├── consulta
+    ├── ingestao_dados
+    └── lake
+
 ```
 - **lambdas**: 
 - **model**: Tudo relacionado ao modelo está nessa pasta. O notebook utilizado para o desenvolvimento é o arquivo `model.ipynb`.
@@ -115,7 +118,8 @@ Para poder executar o projeto de forma correta, é preciso ter acesso aos seguin
 - Glue
 - IAM
 - CloudWatch
-- Lambda
+- EC2
+- ELB
 ***
 
 ## Teste Local do Modelo
@@ -129,7 +133,7 @@ or
 ```bash
 make serve_docker
 ```
-Docker option will run a docker image saved on DockerHub
+A opção `serve_docker` irá utilzar a imagem do modelo armazenada no DockerHub.
 
 Um servidor local irá export uma URL para acessar o Swagger/OpenAPI.
 ![Diagrama](figuras/Swagger.png)
