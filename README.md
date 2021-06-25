@@ -1,5 +1,18 @@
 # Machine Learning Engineer - PicPay
+
 Teste para Ml. Eng. no PicPay
+# Documentação
+1. [Projeto](#projeto)
+    - [Descrição do projeto](#descrição-do-projeto)
+    - [Estrura de pastas](#estrura-de-pastas)
+    - [Depências do projeto.](#depências-do-projeto)
+2. [Como utilizar esse repositório.](#como-utilizar-esse-repositório)  
+    - [Deploy do modelo](#deploy-do-modelo)
+3. [Acessos na AWS](#deploy-do-modelo)
+4. [Teste Local do Modelo](#teste-local-do-modelo)
+
+***
+# Projeto  
 
 ![Diagrama](figuras/Diagrama.png)
 
