@@ -7,10 +7,10 @@ help:
 	@echo "aws_variables: Checa se as variáveis de ambiente da AWS foram definidas."
 	@echo "terraform    : Roda o commando terraform apply."
 	@echo "deploy_infra : Roda o teste das lambdas, o aws_variable e o terraform apply"
-	@echo "retrain      : Roda o retreino do modelo coletando os dado via athena e s3"
-	@echo "serve        : Serve o modelo localmente usando o bentoml"
+	@echo "retrain      : Roda o retreino do modelo coletando os dado via athena e s3, usar version=v#"
+	@echo "serve        : Serve o modelo localmente usando o bentoml, usar version=v#"
 	@echo "serve_docker : Serve o modelo localmente usando o docker"
-	@echo "deploy_model : Faz o deploy do modelo em uma lambda na aws"
+	@echo "deploy_model : Faz o deploy do modelo em uma lambda na aws, usar version=v#"
 
 # Environment
 .ONESHELL:

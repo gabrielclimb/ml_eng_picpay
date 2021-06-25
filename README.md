@@ -111,6 +111,21 @@ Para retreino do modelo, execute:
 ```bash
 make retrain version=v#
 ```
+
+#### Makefile
+`make help`
+```console
+Comandos:
+venv         : Cria o ambiente virtual com as libs necessárias
+test         : Testa o código da lambda.
+aws_variables: Checa se as variáveis de ambiente da AWS foram definidas.
+terraform    : Roda o commando terraform apply.
+deploy_infra : Roda o teste das lambdas, o aws_variable e o terraform apply
+retrain      : Roda o retreino do modelo coletando os dado via athena e s3, usar version=v#
+serve        : Serve o modelo localmente usando o bentoml, usar version=v#
+serve_docker : Serve o modelo localmente usando o docker
+deploy_model : Faz o deploy do modelo em uma lambda na aws, usar version=v#
+```
 ***
 #### Deploy do modelo
 Após executar `make deploy_model`, após uns 5minutos você deve ver o log abaixo:
