@@ -8,6 +8,7 @@ Teste para Ml. Eng. no PicPay
     - [Depências do projeto.](#depências-do-projeto)
 2. [Como utilizar esse repositório.](#como-utilizar-esse-repositório)  
     - [Deploy do modelo](#deploy-do-modelo)
+    - [Makefile](#makefile)
 3. [Acessos na AWS](#deploy-do-modelo)
 4. [Teste Local do Modelo](#teste-local-do-modelo)
 
