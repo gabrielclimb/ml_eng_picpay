@@ -68,7 +68,7 @@ Com o modelo criado, vem a produtização (etapa 4), para isso utilizei o framew
     └── lake
 
 ```
-- **lambdas**: 
+- **lambdas**: Código das lambdas, crawler e transformer
 - **model**: Tudo relacionado ao modelo está nessa pasta. O notebook utilizado para o desenvolvimento é o arquivo `model.ipynb`.
     - *bentoml*: Todos os arquivos necessários para deploy do modelo em lambda utilizando o [bentoml](https://docs.bentoml.org/en/latest/).
     - *server*: Arquivos referentes ao deploy do modelo.
