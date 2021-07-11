@@ -15,7 +15,7 @@ Teste para Ml. Eng. no PicPay
 ***
 # Projeto  
 
-![Diagrama](figuras/Diagrama.png)
+![Diagrama](https://raw.githubusercontent.com/gabrielclimb/ml_eng_picpay/main/figuras/Diagrama.png)
 
 O Projeto foi separado em 4 partes
 
